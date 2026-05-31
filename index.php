@@ -192,6 +192,10 @@ $data_mahasiswa = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card-body">
                     <form action="proses_mahasiswa.php" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
 
+                        <!-- Action -->
+                        <input type="hidden" name="action" value="tambah">
+                        
+                        <!-- Data -->
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Lengkap</label>
                             <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan nama lengkap" required>
@@ -307,6 +311,7 @@ $data_mahasiswa = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <th>Minat</th>
                                 <th>Foto</th>
                                 <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -333,6 +338,19 @@ $data_mahasiswa = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <?= htmlspecialchars($mhs['status']); ?>
                                                 </span>
                                             <?php endif; ?>
+                                        </td>
+                                        <td class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <form method="POST" action="proses_mahasiswa.php"
+                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                <input type="hidden" name="action" value="hapus">
+                                                <input type="hidden" name="id" value="<?= $mhs['id'] ?>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

@@ -7,7 +7,52 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: index.php");
     exit;
 }
-// nama, email, jurusan, jenis_kelamin, minat
+
+$action = $_POST['action'] ?? 'tambah';
+
+// Hapus data mahasiswa
+if ($action === 'hapus') {
+    $id = intval($_POST['id'] ?? 0);
+
+    if ($id <= 0) {
+        $_SESSION['error'] = "ID tidak valid.";
+        header("Location: index.php");
+        exit;
+    }
+
+    try {
+        // Ambil nama foto sebelum dihapus
+        $stmt = $pdo->prepare("SELECT foto FROM mahasiswa WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $mahasiswa = $stmt->fetch();
+
+        if (!$mahasiswa) {
+            $_SESSION['error'] = "Data tidak ditemukan.";
+            header("Location: index.php");
+            exit;
+        }
+
+        // Hapus file foto dari server
+        $lokasi_foto = 'uploads/' . $mahasiswa['foto'];
+        if (file_exists($lokasi_foto)) {
+            unlink($lokasi_foto);
+        }
+
+        // Hapus dari database
+        $stmt = $pdo->prepare("DELETE FROM mahasiswa WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+
+        $_SESSION['success'] = "Data mahasiswa berhasil dihapus.";
+        header("Location: index.php");
+        exit;
+
+    } catch (PDOException $e) {
+        $_SESSION['error'] = "Gagal menghapus data: " . $e->getMessage();
+        header("Location: index.php");
+        exit;
+    }
+}
+
 $nama = trim($_POST['nama'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $jurusan = trim($_POST['jurusan'] ?? '');
