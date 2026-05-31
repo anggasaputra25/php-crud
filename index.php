@@ -339,18 +339,20 @@ $data_mahasiswa = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </span>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <form method="POST" action="proses_mahasiswa.php"
-                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                                <input type="hidden" name="action" value="hapus">
-                                                <input type="hidden" name="id" value="<?= $mhs['id'] ?>">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="edit-mahasiswa.php?id=<?= $mhs['id'] ?>" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form method="POST" action="proses_mahasiswa.php"
+                                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                    <input type="hidden" name="action" value="hapus">
+                                                    <input type="hidden" name="id" value="<?= $mhs['id'] ?>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
